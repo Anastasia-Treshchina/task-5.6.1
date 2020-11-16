@@ -1,6 +1,6 @@
 print("""Игра крестики-нолики""")
-a=3
-b=3
+a = 3
+b = 3
 
 def draw_board():
     for i in range(a):
@@ -12,18 +12,14 @@ def draw_board():
     print()
     print("-" * 13)
 
-    
-    
-# Тут делаем проверку на то, выиграл ли кто-то
 def check_win(board):
-    win_cord =(((0, 0), (0, 1), (0, 2)), ((1, 0), (1, 1), (1, 2)), ((2,0), (2, 1), (2, 2)),
-               ((0, 2), (1, 1), (2, 0)), ((0, 0), (1, 1), (2, 2)), ((0, 0), (1, 0), (2, 0)),
-               ((0, 1), (1, 1), (2, 1)), ((0, 2), (1, 2), (2, 2)))
+    win_cord = (((0, 0), (0, 1), (0, 2)), ((1, 0), (1, 1), (1, 2)), ((2, 0), (2, 1), (2, 2)),
+                ((0, 2), (1, 1), (2, 0)), ((0, 0), (1, 1), (2, 2)), ((0, 0), (1, 0), (2, 0)),
+                ((0, 1), (1, 1), (2, 1)), ((0, 2), (1, 2), (2, 2)))
     for cord in win_cord:
         symbols = []
         for c in cord:
             symbols.append(board[c[0]][c[1]])
-
         if symbols == ["X", "X", "X"]:
             print("Выиграл X!!!")
             return True
@@ -32,6 +28,24 @@ def check_win(board):
             return True
     return False
 
+def check_cord(board, x, y):
+    if x >= 0 and y >= 0 and x <= 2 and y <= 2:
+        if board[x][y] != "X" and board[x][y] != "0":
+            return True
+        else:
+            print("Точка занята!")
+            return False
+    else:
+        print("Координаты вне диапазона!")
+        return False
+
+def ask_cord(board):
+    while True:
+        x = int(input("Введите номер строки: "))
+        y = int(input("Введите номер столбца: "))
+        if check_cord(board, x, y):
+            return x, y
+
 board = [
     [" ", " ", " "],
     [" ", " ", " "],
@@ -39,18 +53,15 @@ board = [
 
 for i in range(9):
     draw_board()
-    print("Номера строк и столбцов от 0 до 2.")
     if i % 2 == 0:
         print("Ходит крестик")
     else:
         print("Ходит нолик")
-        # В зависимости от чётности i выводим сообщение, о том, кто сейчас ходит (крестик или нолик)
-    x = int(input("Введите номер строки: "))
-    y = int(input("Введите номер столбца: "))
-    if i % 2 == 0:# Тут тоже в зависимости от чётности ставим либо "X" либо "O"
+    x, y = ask_cord(board)
+    if i % 2 == 0:
         board[x][y] = "X"
     else:
         board[x][y] = "0"
-    
+
     if check_win(board):
         break
